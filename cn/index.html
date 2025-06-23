@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndieDevTools - 独立开发者工具导航站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#722ED1',
+                        accent: '#FF7D00',
+                        dark: '#1D2129',
+                        light: '#F2F3F5',
+                        success: '#00B42A',
+                        warning: '#FF7D00',
+                        danger: '#F53F3F',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .tool-card-hover {
+                @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+            }
+            .nav-link {
+                @apply text-gray-600 hover:text-primary transition-colors duration-200 px-3 py-2;
+            }
+            .nav-link-active {
+                @apply text-primary font-medium;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+            }
+            .btn-secondary {
+                @apply bg-white border border-gray-300 hover:bg-gray-50 text-dark font-medium py-2 px-4 rounded-lg transition-all duration-200;
+            }
+            .section-title {
+                @apply text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4;
+            }
+            .section-subtitle {
+                @apply text-gray-600 text-lg mb-8 max-w-3xl mx-auto;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-light text-dark">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/95 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <div class="bg-primary text-white h-8 w-8 rounded-lg flex items-center justify-center mr-2">
+                            <i class="fa fa-wrench"></i>
+                        </div>
+                        <span class="text-xl font-bold text-dark">IndieDevTools</span>
+                    </a>
+                </div>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex space-x-1">
+                    <a href="#tools" class="nav-link nav-link-active">工具导航</a>
+                    <a href="#cases" class="nav-link">成功案例</a>
+                    <a href="#problems" class="nav-link">问题记录</a>
+                    <a href="#resources" class="nav-link">学习资源</a>
+                </nav>
+                
+                <!-- 搜索和用户 -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden md:block">
+                        <input type="text" placeholder="搜索工具..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-48 lg:w-64 transition-all duration-200">
+                        <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <button class="btn-primary hidden md:block">
+                        <i class="fa fa-plus mr-1"></i> 推荐工具
+                    </button>
+                    
+                    <!-- 移动端菜单按钮 -->
+                    <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-primary">
+                        <i class="fa fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 space-y-2">
+                <a href="#tools" class="block py-2 text-gray-600 hover:text-primary">工具导航</a>
+                <a href="#cases" class="block py-2 text-gray-600 hover:text-primary">成功案例</a>
+                <a href="#problems" class="block py-2 text-gray-600 hover:text-primary">问题记录</a>
+                <a href="#resources" class="block py-2 text-gray-600 hover:text-primary">学习资源</a>
+                <div class="relative mt-3">
+                    <input type="text" placeholder="搜索工具..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-full">
+                    <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <button class="btn-primary w-full mt-3">
+                    <i class="fa fa-plus mr-1"></i> 推荐工具
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-dark leading-tight mb-6">
+                    独立开发者的<span class="text-primary">工具宝库</span>与<span class="text-secondary">成功指南</span>
+                </h1>
+                <p class="text-gray-600 text-lg md:text-xl mb-8 max-w-3xl mx-auto">
+                    汇集全球优质工具，分享实战经验，助你快速搭建、发布和推广独立项目，少走弯路，直达成功
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+                    <button class="btn-primary">
+                        <i class="fa fa-compass mr-2"></i> 探索工具库
+                    </button>
+                    <button class="btn-secondary">
+                        <i class="fa fa-lightbulb-o mr-2"></i> 查看成功案例
+                    </button>
+                </div>
+                
+                <!-- 统计数据 -->
+                <!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-primary mb-1">500+</div>
+                        <div class="text-gray-600">精选工具</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-secondary mb-1">120+</div>
+                        <div class="text-gray-600">成功案例</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-accent mb-1">85k+</div>
+                        <div class="text-gray-600">月访问量</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-success mb-1">3.2k+</div>
+                        <div class="text-gray-600">社区成员</div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 工具分类导航 -->
+    <section id="tools" class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">按阶段筛选工具</h2>
+                <p class="section-subtitle">无论你处于独立开发的哪个阶段，都能找到适合的工具</p>
+            </div>
+            
+            <!-- 阶段标签 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button class="filter-btn active px-5 py-2 rounded-full bg-primary text-white font-medium" data-category="all">全阶段</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="discovery">发现需求</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="build">构建网站</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="launch">发布网站</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="promote">推广工具</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="monetize">获取收入</button>
+            </div>
+            
+            <!-- 工具卡片网格 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- 发现需求工具卡片 -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-search text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">SimilarWeb</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">获取竞争对手网站流量数据和市场洞察，帮助你发现市场机会</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.8</span>
+                            </div>
+                            <a href="https://www.similarweb.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-lightbulb-o text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">ProductHunt</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">从产品角度发现新需求和趋势，了解用户对产品的真实反馈</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.9</span>
+                            </div>
+                            <a href="https://www.producthunt.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-twitter text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Twitter</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">从社交媒体中寻找用户痛点和需求，关注行业讨论和趋势</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.5</span>
+                            </div>
+                            <a href="https://twitter.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-reddit text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Reddit</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">从关注的产品社区中寻找用户需求和痛点，了解真实用户反馈</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.3</span>
+                            </div>
+                            <a href="https://www.reddit.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-line-chart text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Google Trends</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">从趋势关键词中发现市场需求变化，了解用户搜索行为</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.7</span>
+                            </div>
+                            <a href="https://trends.google.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-bullhorn text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">SEMrush</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">从关键词研究中发现市场需求，分析搜索量和竞争情况</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.7</span>
+                            </div>
+                            <a href="https://www.semrush.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-keyboard-o text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Trending Keywords</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">实时监控热门关键词趋势，发现新兴市场需求和机会</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.2</span>
+                            </div>
+                            <a href="https://trendingkeywords.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-chrome text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Chrome Extensions</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">通过Chrome扩展商店发现用户需求和工具缺口</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.4</span>
+                            </div>
+                            <a href="https://chrome.google.com/webstore" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-cogs text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">States Toolify</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">发现需求</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">分析工具使用状态和用户行为，发现工具改进需求</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.1</span>
+                            </div>
+                            <a href="https://statestoolify.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 构建网站工具卡片 -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="build">
+                    <div class="h-40 bg-secondary/10 flex items-center justify-center">
+                        <i class="fa fa-paint-brush text-5xl text-secondary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Figma</h3>
+                            <span class="bg-secondary/10 text-secondary text-xs font-medium px-2.5 py-0.5 rounded">构建网站</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">强大的协作式UI设计工具，支持原型设计和团队协作，适合网站界面设计</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">5.0</span>
+                            </div>
+                            <a href="https://www.figma.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="build">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-code text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">VS Code</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">构建网站</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">最流行的开源代码编辑器，支持丰富的插件生态，提升你的开发效率</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.6</span>
+                            </div>
+                            <a href="https://code.visualstudio.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 发布网站工具卡片 -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="launch">
+                    <div class="h-40 bg-accent/10 flex items-center justify-center">
+                        <i class="fa fa-rocket text-5xl text-accent"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Vercel</h3>
+                            <span class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-0.5 rounded">发布网站</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">一键部署前端应用，支持Git集成和自动CDN加速，让你的网站秒级上线</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.0</span>
+                            </div>
+                            <a href="https://vercel.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="launch">
+                    <div class="h-40 bg-secondary/10 flex items-center justify-center">
+                        <i class="fa fa-server text-5xl text-secondary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Namecheap</h3>
+                            <span class="bg-secondary/10 text-secondary text-xs font-medium px-2.5 py-0.5 rounded">发布网站</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">性价比极高的域名注册商，提供域名注册、SSL证书和主机服务</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.1</span>
+                            </div>
+                            <a href="https://www.namecheap.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 推广工具卡片 -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="promote">
+                    <div class="h-40 bg-success/10 flex items-center justify-center">
+                        <i class="fa fa-bullhorn text-5xl text-success"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">SEMrush</h3>
+                            <span class="bg-success/10 text-success text-xs font-medium px-2.5 py-0.5 rounded">推广工具</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">全方位SEO工具，帮助你分析关键词、跟踪排名和监控竞争对手的广告策略</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.7</span>
+                            </div>
+                            <a href="https://www.semrush.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="promote">
+                    <div class="h-40 bg-accent/10 flex items-center justify-center">
+                        <i class="fa fa-line-chart text-5xl text-accent"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Google Analytics</h3>
+                            <span class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-0.5 rounded">推广工具</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">免费的网站流量分析工具，帮助你了解用户行为和优化网站性能</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.9</span>
+                            </div>
+                            <a href="https://analytics.google.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 获取收入工具卡片 -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="monetize">
+                    <div class="h-40 bg-danger/10 flex items-center justify-center">
+                        <i class="fa fa-credit-card text-5xl text-danger"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Stripe</h3>
+                            <span class="bg-danger/10 text-danger text-xs font-medium px-2.5 py-0.5 rounded">获取收入</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">全球领先的在线支付平台，支持多种支付方式，让你的网站轻松接受付款</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.2</span>
+                            </div>
+                            <a href="https://stripe.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 查看更多按钮 -->
+            <div class="text-center mt-12">
+                <button class="btn-primary">
+                    查看全部工具 <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成功案例展示 -->
+    <section id="cases" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">成功案例分享</h2>
+                <p class="section-subtitle">借鉴他人的成功经验，少走弯路，快速实现你的目标</p>
+            </div>
+            
+            <!-- 案例标签 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button class="px-5 py-2 rounded-full bg-primary text-white font-medium">全部分类</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">跨境电商</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">SaaS工具</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">内容博客</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">企业官网</button>
+            </div>
+            
+            <!-- 案例卡片网格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 案例卡片 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/case1/800/500" alt="SaaS工具案例展示" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4 bg-primary text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            SaaS工具
+                        </div>
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            Medium
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">10位独立开发者：激励你打造第一个SaaS业务</h3>
+                        <p class="text-gray-600 mb-4">来自Medium的精选文章，分享10位成功独立开发者的真实故事，从想法到产品，从0到1的完整创业历程</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/user1/100/100" alt="文章作者头像" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <div class="font-medium">Saurabh Lakhyani</div>
+                                    <div class="text-gray-500 text-sm">独立开发者 & 技术博主</div>
+                                </div>
+                            </div>
+                            <div class="text-yellow-400 flex">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">SaaS</span>
+                            <span class="bg-secondary/10 text-secondary text-xs font-medium px-2.5 py-0.5 rounded">创业故事</span>
+                            <span class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-0.5 rounded">独立开发</span>
+                        </div>
+                        <a href="https://medium.com/@slakhyani20/10-indie-makers-who-will-inspire-you-to-build-your-first-saas-business-f794a4d31a77" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            阅读原文 <i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 查看更多按钮 -->
+            <div class="text-center mt-12">
+                <button class="btn-primary">
+                    浏览更多案例 <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 问题记录与解决方案 -->
+    <section id="problems" class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">常见问题与解决方案</h2>
+                <p class="section-subtitle">记录独立开发者在工具使用过程中遇到的问题及解决方案</p>
+            </div>
+            
+            <!-- 问题分类标签 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button class="px-5 py-2 rounded-full bg-primary text-white font-medium">全部问题</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">安装配置</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">技术难题</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">性能优化</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">安全问题</button>
+            </div>
+            
+            <!-- 问题列表已隐藏，不显示任何问题卡片 -->
+        </div>
+    </section>
+
+    <!-- 学习资源 -->
+    <section id="resources" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">学习资源</h2>
+                <p class="section-subtitle">提升技能，获取更多关于独立开发的知识和教程</p>
+            </div>
+            
+            <!-- 资源类型标签 -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button class="px-5 py-2 rounded-full bg-primary text-white font-medium">全部资源</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">视频教程</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">文章指南</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">播客访谈</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">电子书</button>
+            </div>
+            
+            <!-- 资源列表 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 资源卡片 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <!-- YouTube视频嵌入 -->
+                        <div class="relative w-full h-48">
+                            <iframe 
+                                src="https://www.youtube.com/embed/NadiT0HYt4Y" 
+                                title="独立站SEO实战指南" 
+                                class="w-full h-full rounded-t-xl"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="absolute top-4 left-4 bg-primary text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            视频教程
+                        </div>
+                        <div class="absolute bottom-4 right-4 bg-black/70 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            42分钟
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">2023年独立站SEO实战指南：从0到1获取自然流量</h3>
+                        <p class="text-gray-600 mb-4">本视频教程将带你了解独立站SEO的核心策略和技术，从关键词研究到页面优化，再到外链建设，全面掌握SEO技能</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/teacher1/100/100" alt="讲师头像" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-600">SEO专家</span>
+                            </div>
+                            <div class="text-gray-500 text-sm">2023-05-15</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 资源卡片 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/resource2/800/450" alt="Tony Dinh文章封面" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4 bg-secondary text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            文章指南
+                        </div>
+                        <div class="absolute top-4 right-4 bg-orange-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            Substack
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">我的独立开发者故事：从0到月入4.5万美元的2年历程</h3>
+                        <p class="text-gray-600 mb-4">Tony Dinh分享他从辞职到成为全职独立开发者的完整故事，包括产品开发、用户增长、收入突破等关键经验</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/teacher2/100/100" alt="Tony Dinh头像" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-600">Tony Dinh - 独立开发者</span>
+                            </div>
+                            <div class="text-gray-500 text-sm">2023-09-22</div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-gray-500 text-sm">阅读时间：15分钟</span>
+                                    <span class="mx-2 text-gray-300">|</span>
+                                    <span class="text-gray-500 text-sm">12,695次阅读</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400 text-sm">⭐ 5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://news.tonydinh.com/p/my-solopreneur-story-zero-to-45kmo" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center mt-4">
+                            阅读原文 <i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 资源卡片 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/resource3/800/450" alt="Jahid Hasan文章封面" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4 bg-accent text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            文章指南
+                        </div>
+                        <div class="absolute top-4 right-4 bg-blue-700 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            LinkedIn
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">独立开发者工作室的成功故事：游戏行业的逆袭传奇</h3>
+                        <p class="text-gray-600 mb-4">Jahid Hasan分享独立游戏开发者的成功案例，包括Minecraft、Celeste、Stardew Valley等经典游戏的创业故事</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/teacher3/100/100" alt="Jahid Hasan头像" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-600">Jahid Hasan - 游戏开发者</span>
+                            </div>
+                            <div class="text-gray-500 text-sm">2023-05-27</div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-gray-500 text-sm">阅读时间：8分钟</span>
+                                    <span class="mx-2 text-gray-300">|</span>
+                                    <span class="text-gray-500 text-sm">439位关注者</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400 text-sm">⭐ 4.8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://www.linkedin.com/pulse/success-story-indie-dev-studios-jahid-hasan" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center mt-4">
+                            阅读原文 <i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">IndieDevTools</h3>
+                    <p class="text-gray-400">为独立开发者提供最实用的工具导航，助力你的项目成功。</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">工具分类</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">发现需求</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">构建网站</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">发布网站</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">推广工具</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">资源</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">成功案例</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">问题解决</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">学习教程</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">社区讨论</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">联系我们</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">意见反馈</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">加入社区</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 IndieDevTools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 工具卡片筛选功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const toolCards = document.querySelectorAll('.tool-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // 更新按钮状态
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-primary', 'text-white');
+                        btn.classList.add('bg-gray-100', 'text-gray-700');
+                    });
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-gray-100', 'text-gray-700');
+                    
+                    // 筛选工具卡片
+                    toolCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeIn 0.5s ease-in-out';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+        // 添加淡入动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndieDevTools - The Ultimate Toolkit for Indie Developers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#722ED1',
+                        accent: '#FF7D00',
+                        dark: '#1D2129',
+                        light: '#F2F3F5',
+                        success: '#00B42A',
+                        warning: '#FF7D00',
+                        danger: '#F53F3F',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .tool-card-hover {
+                @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+            }
+            .nav-link {
+                @apply text-gray-600 hover:text-primary transition-colors duration-200 px-3 py-2;
+            }
+            .nav-link-active {
+                @apply text-primary font-medium;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+            }
+            .btn-secondary {
+                @apply bg-white border border-gray-300 hover:bg-gray-50 text-dark font-medium py-2 px-4 rounded-lg transition-all duration-200;
+            }
+            .section-title {
+                @apply text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4;
+            }
+            .section-subtitle {
+                @apply text-gray-600 text-lg mb-8 max-w-3xl mx-auto;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-light text-dark">
+    <!-- Navbar -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/95 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <div class="bg-primary text-white h-8 w-8 rounded-lg flex items-center justify-center mr-2">
+                            <i class="fa fa-wrench"></i>
+                        </div>
+                        <span class="text-xl font-bold text-dark">IndieDevTools</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-1">
+                    <a href="#tools" class="nav-link nav-link-active">Tool Directory</a>
+                    <a href="#cases" class="nav-link">Success Stories</a>
+                    <a href="#problems" class="nav-link">Problem Solver</a>
+                    <a href="#resources" class="nav-link">Learning Resources</a>
+                </nav>
+                
+                <!-- Search and User -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden md:block">
+                        <input type="text" placeholder="Search tools..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-48 lg:w-64 transition-all duration-200">
+                        <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <button class="btn-primary hidden md:block">
+                        <i class="fa fa-plus mr-1"></i> Recommend Tool
+                    </button>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-primary">
+                        <i class="fa fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 space-y-2">
+                <a href="#tools" class="block py-2 text-gray-600 hover:text-primary">Tool Directory</a>
+                <a href="#cases" class="block py-2 text-gray-600 hover:text-primary">Success Stories</a>
+                <a href="#problems" class="block py-2 text-gray-600 hover:text-primary">Problem Solver</a>
+                <a href="#resources" class="block py-2 text-gray-600 hover:text-primary">Learning Resources</a>
+                <div class="relative mt-3">
+                    <input type="text" placeholder="Search tools..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-full">
+                    <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <button class="btn-primary w-full mt-3">
+                    <i class="fa fa-plus mr-1"></i> Recommend Tool
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-dark leading-tight mb-6">
+                    The <span class="text-primary">Ultimate Toolkit</span> and <span class="text-secondary">Success Guide</span> for Indie Developers
+                </h1>
+                <p class="text-gray-600 text-lg md:text-xl mb-8 max-w-3xl mx-auto">
+                    Discover curated tools, learn from real-world case studies, and overcome challenges to build, launch, and grow your indie projects faster
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+                    <button class="btn-primary">
+                        <i class="fa fa-compass mr-2"></i> Explore Tool Library
+                    </button>
+                    <button class="btn-secondary">
+                        <i class="fa fa-lightbulb-o mr-2"></i> Browse Success Stories
+                    </button>
+                </div>
+                
+                <!-- Stats -->
+                <!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-primary mb-1">500+</div>
+                        <div class="text-gray-600">Curated Tools</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-secondary mb-1">120+</div>
+                        <div class="text-gray-600">Success Stories</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-accent mb-1">85k+</div>
+                        <div class="text-gray-600">Monthly Visitors</div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-3xl font-bold text-success mb-1">3.2k+</div>
+                        <div class="text-gray-600">Community Members</div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Directory -->
+    <section id="tools" class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">Tools by Development Stage</h2>
+                <p class="section-subtitle">Find the perfect tools for every step of your indie development journey</p>
+            </div>
+            
+            <!-- Stage Tags -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button class="filter-btn active px-5 py-2 rounded-full bg-primary text-white font-medium" data-category="all">All Stages</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="discovery">Idea Validation</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="build">Website Building</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="launch">Website Launch</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="promote">Marketing & Growth</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="monetize">Monetization</button>
+            </div>
+            
+            <!-- Tool Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Idea Validation Tool Cards -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-search text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">SimilarWeb</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Get insights into your competitors' traffic sources and market opportunities to validate your ideas</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.8</span>
+                            </div>
+                            <a href="https://www.similarweb.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-lightbulb-o text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">ProductHunt</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Discover new product ideas and trends from a product perspective, understand real user feedback</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.9</span>
+                            </div>
+                            <a href="https://www.producthunt.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-twitter text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Twitter</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Find user pain points and needs from social media, follow industry discussions and trends</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.5</span>
+                            </div>
+                            <a href="https://twitter.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-reddit text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Reddit</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Find user needs and pain points from product communities, understand real user feedback</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.3</span>
+                            </div>
+                            <a href="https://www.reddit.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-line-chart text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Google Trends</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Discover market demand changes from trending keywords, understand user search behavior</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.7</span>
+                            </div>
+                            <a href="https://trends.google.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-bullhorn text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">SEMrush</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Discover market demands from keyword research, analyze search volume and competition</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.7</span>
+                            </div>
+                            <a href="https://www.semrush.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-keyboard-o text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Trending Keywords</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Monitor trending keywords in real-time, discover emerging market demands and opportunities</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.2</span>
+                            </div>
+                            <a href="https://trendingkeywords.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-chrome text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Chrome Extensions</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Discover user needs and tool gaps through Chrome Web Store</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.4</span>
+                            </div>
+                            <a href="https://chrome.google.com/webstore" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-cogs text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">States Toolify</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Idea Validation</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Analyze tool usage states and user behavior, discover tool improvement needs</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.1</span>
+                            </div>
+                            <a href="https://statestoolify.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Website Building Tool Cards -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="build">
+                    <div class="h-40 bg-secondary/10 flex items-center justify-center">
+                        <i class="fa fa-paint-brush text-5xl text-secondary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Figma</h3>
+                            <span class="bg-secondary/10 text-secondary text-xs font-medium px-2.5 py-0.5 rounded">Website Building</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Powerful collaborative UI design tool with real-time collaboration and prototyping capabilities</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">5.0</span>
+                            </div>
+                            <a href="https://www.figma.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="build">
+                    <div class="h-40 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-code text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">VS Code</h3>
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">Website Building</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Most popular open-source code editor with intelligent autocompletion and extensive plugin ecosystem</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.6</span>
+                            </div>
+                            <a href="https://code.visualstudio.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Website Launch Tool Cards -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="launch">
+                    <div class="h-40 bg-accent/10 flex items-center justify-center">
+                        <i class="fa fa-rocket text-5xl text-accent"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Vercel</h3>
+                            <span class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-0.5 rounded">Website Launch</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Deploy and host your web projects with automatic CI/CD, global CDN, and instant rollbacks</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.0</span>
+                            </div>
+                            <a href="https://vercel.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="launch">
+                    <div class="h-40 bg-secondary/10 flex items-center justify-center">
+                        <i class="fa fa-server text-5xl text-secondary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Namecheap</h3>
+                            <span class="bg-secondary/10 text-secondary text-xs font-medium px-2.5 py-0.5 rounded">Website Launch</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">High-value domain registrar offering domain registration, SSL certificates, and hosting services</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.1</span>
+                            </div>
+                            <a href="https://www.namecheap.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Marketing & Growth Tool Cards -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="promote">
+                    <div class="h-40 bg-success/10 flex items-center justify-center">
+                        <i class="fa fa-bullhorn text-5xl text-success"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">SEMrush</h3>
+                            <span class="bg-success/10 text-success text-xs font-medium px-2.5 py-0.5 rounded">Marketing & Growth</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">All-in-one SEO toolkit to research keywords, track rankings, and analyze your competitors' strategies</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.7</span>
+                            </div>
+                            <a href="https://www.semrush.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="promote">
+                    <div class="h-40 bg-accent/10 flex items-center justify-center">
+                        <i class="fa fa-line-chart text-5xl text-accent"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Google Analytics</h3>
+                            <span class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-0.5 rounded">Marketing & Growth</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Free website analytics tool to understand user behavior and optimize website performance</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.9</span>
+                            </div>
+                            <a href="https://analytics.google.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Monetization Tool Cards -->
+                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="monetize">
+                    <div class="h-40 bg-danger/10 flex items-center justify-center">
+                        <i class="fa fa-credit-card text-5xl text-danger"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold">Stripe</h3>
+                            <span class="bg-danger/10 text-danger text-xs font-medium px-2.5 py-0.5 rounded">Monetization</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Global payment processing platform that makes it easy to accept payments from customers worldwide</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="text-yellow-400 flex">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                                <span class="text-gray-500 text-sm ml-1">4.2</span>
+                            </div>
+                            <a href="https://stripe.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                Visit <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View More Button -->
+            <div class="text-center mt-12">
+                <button class="btn-primary">
+                    View All Tools <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section id="cases" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">Success Stories</h2>
+                <p class="section-subtitle">Learn from real-world examples of indie developers who turned their ideas into successful businesses</p>
+            </div>
+            
+            <!-- Case Study Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Case Study 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/case1/800/500" alt="SaaS success story" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4 bg-primary text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            SaaS
+                        </div>
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            Medium
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">10 Indie Makers Who Will Inspire You to Build Your First SaaS Business</h3>
+                        <p class="text-gray-600 mb-4">A curated Medium article featuring 10 successful indie developers sharing their real stories from idea to product, complete journey from 0 to 1</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/user1/100/100" alt="Article author" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <div class="font-medium">Saurabh Lakhyani</div>
+                                    <div class="text-gray-500 text-sm">Indie Developer & Tech Blogger</div>
+                                </div>
+                            </div>
+                            <div class="text-yellow-400 flex">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">SaaS</span>
+                            <span class="bg-secondary/10 text-secondary text-xs font-medium px-2.5 py-0.5 rounded">Startup Stories</span>
+                            <span class="bg-accent/10 text-accent text-xs font-medium px-2.5 py-0.5 rounded">Indie Development</span>
+                        </div>
+                        <a href="https://medium.com/@slakhyani20/10-indie-makers-who-will-inspire-you-to-build-your-first-saas-business-f794a4d31a77" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                            Read Original Article <i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View More Button -->
+            <div class="text-center mt-12">
+                <button class="btn-primary">
+                    Browse All Stories <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Solver -->
+    <section id="problems" class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">Common Problems & Solutions</h2>
+                <p class="section-subtitle">Find solutions to the most common challenges faced by indie developers</p>
+            </div>
+            
+            <!-- Problem Category Tags -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button class="px-5 py-2 rounded-full bg-primary text-white font-medium">All Categories</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">Installation</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">Technical Issues</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">Performance</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">Security</button>
+            </div>
+            
+            <!-- Problem List is hidden, no problem cards shown -->
+        </div>
+    </section>
+
+    <!-- Learning Resources -->
+    <section id="resources" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="section-title">Learning Resources</h2>
+                <p class="section-subtitle">Enhance your skills and gain more knowledge about indie development</p>
+            </div>
+            
+            <!-- Resource Type Tags -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button class="px-5 py-2 rounded-full bg-primary text-white font-medium">All Resources</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">Video Tutorials</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">Articles & Guides</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">Podcasts</button>
+                <button class="px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors">E-books</button>
+            </div>
+            
+            <!-- Resources List -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Resource Card 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <!-- YouTube Video Embed -->
+                        <div class="relative w-full h-48">
+                            <iframe 
+                                src="https://www.youtube.com/embed/NadiT0HYt4Y" 
+                                title="Indie Site SEO Complete Guide" 
+                                class="w-full h-full rounded-t-xl"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="absolute top-4 left-4 bg-primary text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            Video Tutorial
+                        </div>
+                        <div class="absolute bottom-4 right-4 bg-black/70 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            42 min
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">2023 Indie Site SEO Complete Guide: From 0 to 1 Organic Traffic</h3>
+                        <p class="text-gray-600 mb-4">This video tutorial will guide you through the core strategies and techniques of indie site SEO, from keyword research to page optimization and link building</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/teacher1/100/100" alt="Instructor avatar" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-600">SEO Expert - John Smith</span>
+                            </div>
+                            <div class="text-gray-500 text-sm">2023-05-15</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/resource2/800/450" alt="Tony Dinh article cover" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4 bg-secondary text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            Article & Guide
+                        </div>
+                        <div class="absolute top-4 right-4 bg-orange-600 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            Substack
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">My Solopreneur Story: Zero to $45K/Month in 2 Years</h3>
+                        <p class="text-gray-600 mb-4">Tony Dinh shares his complete journey from quitting his job to becoming a full-time indie developer, including product development, user growth, and revenue breakthroughs</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/teacher2/100/100" alt="Tony Dinh avatar" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-600">Tony Dinh - Indie Developer</span>
+                            </div>
+                            <div class="text-gray-500 text-sm">2023-09-22</div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-gray-500 text-sm">Read time: 15 min</span>
+                                    <span class="mx-2 text-gray-300">|</span>
+                                    <span class="text-gray-500 text-sm">12,695 reads</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400 text-sm">⭐ 5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://news.tonydinh.com/p/my-solopreneur-story-zero-to-45kmo" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center mt-4">
+                            Read Original Article <i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden tool-card-hover">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/resource3/800/450" alt="Jahid Hasan article cover" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4 bg-accent text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            Article & Guide
+                        </div>
+                        <div class="absolute top-4 right-4 bg-blue-700 text-white text-xs font-medium px-2.5 py-0.5 rounded">
+                            LinkedIn
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Success Story of Indie Dev and Their Studios: Gaming Industry Underdogs</h3>
+                        <p class="text-gray-600 mb-4">Jahid Hasan shares success stories of indie game developers, including Minecraft, Celeste, Stardew Valley and other classic game entrepreneurship stories</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/teacher3/100/100" alt="Jahid Hasan avatar" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-600">Jahid Hasan - Game Developer</span>
+                            </div>
+                            <div class="text-gray-500 text-sm">2023-05-27</div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <span class="text-gray-500 text-sm">Read time: 8 min</span>
+                                    <span class="mx-2 text-gray-300">|</span>
+                                    <span class="text-gray-500 text-sm">439 followers</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400 text-sm">⭐ 4.8</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://www.linkedin.com/pulse/success-story-indie-dev-studios-jahid-hasan" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center mt-4">
+                            Read Original Article <i class="fa fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View More Button -->
+            <div class="text-center mt-12">
+                <button class="btn-primary">
+                    Browse All Resources <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">IndieDevTools</h3>
+                    <p class="text-gray-400">Providing the most practical tool navigation for indie developers to help your projects succeed.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Tool Categories</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Idea Validation</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Website Building</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Website Launch</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Marketing & Growth</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Success Stories</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Problem Solutions</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Learning Tutorials</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Community Discussion</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Feedback</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Join Community</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 IndieDevTools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Tool card filtering functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const toolCards = document.querySelectorAll('.tool-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update button states
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-primary', 'text-white');
+                        btn.classList.add('bg-gray-100', 'text-gray-700');
+                    });
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-gray-100', 'text-gray-700');
+                    
+                    // Filter tool cards
+                    toolCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeIn 0.5s ease-in-out';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+        // Problem toggle functionality
+        function toggleProblem(element) {
+            const content = element.querySelector('.problem-content');
+            const icon = element.querySelector('.fa-chevron-down');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Add fade-in animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
