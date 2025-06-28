@@ -3,7 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IndieDevTools - 独立开发者工具导航站</title>
+    <title>IndieDevTools - 独立开发者工具导航站 | 独立开发必备工具集合</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="IndieDevTools是专为独立开发者打造的工具导航站，汇集全球优质工具，分享实战经验，助你快速搭建、发布和推广独立项目。包含需求发现、网站构建、发布推广、收入获取等全流程工具。">
+    <meta name="keywords" content="独立开发者,工具导航,开发者工具,SaaS工具,网站构建,产品发布,市场推广,收入变现,创业工具,程序员工具,独立开发,indie developer,tools,startup tools">
+    <meta name="author" content="IndieDevTools">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="IndieDevTools - 独立开发者工具导航站">
+    <meta property="og:description" content="专为独立开发者打造的工具导航站，汇集全球优质工具，分享实战经验，助你快速搭建、发布和推广独立项目。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://indiedevtools.com/cn/">
+    <meta property="og:image" content="https://indiedevtools.com/assets/images/og-image-cn.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="IndieDevTools">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="IndieDevTools - 独立开发者工具导航站">
+    <meta name="twitter:description" content="专为独立开发者打造的工具导航站，汇集全球优质工具，分享实战经验，助你快速搭建、发布和推广独立项目。">
+    <meta name="twitter:image" content="https://indiedevtools.com/assets/images/twitter-card-cn.png">
+    <meta name="twitter:site" content="@IndieDevTools">
+    <meta name="twitter:creator" content="@IndieDevTools">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#165DFF">
+    <meta name="msapplication-TileColor" content="#165DFF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="IndieDevTools">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://indiedevtools.com/cn/">
+    
+    <!-- Alternate Language Versions -->
+    <link rel="alternate" hreflang="en" href="https://indiedevtools.com/en/">
+    <link rel="alternate" hreflang="zh-CN" href="https://indiedevtools.com/cn/">
+    <link rel="alternate" hreflang="x-default" href="https://indiedevtools.com/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- External CSS and JS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
@@ -60,6 +115,81 @@
             }
         }
     </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "IndieDevTools",
+        "alternateName": "独立开发者工具导航站",
+        "url": "https://indiedevtools.com/cn/",
+        "description": "专为独立开发者打造的工具导航站，汇集全球优质工具，分享实战经验，助你快速搭建、发布和推广独立项目。",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://indiedevtools.com/cn/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "IndieDevTools",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://indiedevtools.com/assets/images/logo.png"
+            }
+        },
+        "sameAs": [
+            "https://github.com/indiedevtools",
+            "https://twitter.com/IndieDevTools"
+        ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "独立开发者工具集合",
+        "description": "按开发阶段分类的独立开发者工具集合",
+        "numberOfItems": 15,
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@type": "SoftwareApplication",
+                    "name": "SimilarWeb",
+                    "description": "获取竞争对手网站流量数据和市场洞察，帮助你发现市场机会",
+                    "applicationCategory": "BusinessApplication",
+                    "operatingSystem": "Web",
+                    "url": "https://www.similarweb.com",
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": "4.8",
+                        "ratingCount": "1250"
+                    }
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@type": "SoftwareApplication",
+                    "name": "ProductHunt",
+                    "description": "从产品角度发现新需求和趋势，了解用户对产品的真实反馈",
+                    "applicationCategory": "BusinessApplication",
+                    "operatingSystem": "Web",
+                    "url": "https://www.producthunt.com",
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": "4.9",
+                        "ratingCount": "2100"
+                    }
+                }
+            }
+        ]
+    }
+    </script>
 </head>
 <body class="font-inter bg-light text-dark">
     <!-- 导航栏 -->
@@ -68,16 +198,16 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="#" class="flex items-center">
+                    <a href="#" class="flex items-center" aria-label="IndieDevTools 首页">
                         <div class="bg-primary text-white h-8 w-8 rounded-lg flex items-center justify-center mr-2">
-                            <i class="fa fa-wrench"></i>
+                            <i class="fa fa-wrench" aria-hidden="true"></i>
                         </div>
                         <span class="text-xl font-bold text-dark">IndieDevTools</span>
                     </a>
                 </div>
                 
                 <!-- 桌面导航 -->
-                <nav class="hidden md:flex space-x-1">
+                <nav class="hidden md:flex space-x-1" role="navigation" aria-label="主导航">
                     <a href="#tools" class="nav-link nav-link-active">工具导航</a>
                     <a href="#cases" class="nav-link">成功案例</a>
                     <a href="#problems" class="nav-link">问题记录</a>
@@ -87,16 +217,16 @@
                 <!-- 搜索和用户 -->
                 <div class="flex items-center space-x-4">
                     <div class="relative hidden md:block">
-                        <input type="text" placeholder="搜索工具..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-48 lg:w-64 transition-all duration-200">
-                        <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="搜索工具..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-48 lg:w-64 transition-all duration-200" aria-label="搜索工具">
+                        <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
                     </div>
                     <button class="btn-primary hidden md:block">
-                        <i class="fa fa-plus mr-1"></i> 推荐工具
+                        <i class="fa fa-plus mr-1" aria-hidden="true"></i> 推荐工具
                     </button>
                     
                     <!-- 移动端菜单按钮 -->
-                    <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-primary">
-                        <i class="fa fa-bars text-xl"></i>
+                    <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-primary" aria-label="打开菜单">
+                        <i class="fa fa-bars text-xl" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -110,11 +240,11 @@
                 <a href="#problems" class="block py-2 text-gray-600 hover:text-primary">问题记录</a>
                 <a href="#resources" class="block py-2 text-gray-600 hover:text-primary">学习资源</a>
                 <div class="relative mt-3">
-                    <input type="text" placeholder="搜索工具..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-full">
-                    <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="搜索工具..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 w-full" aria-label="搜索工具">
+                    <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
                 </div>
                 <button class="btn-primary w-full mt-3">
-                    <i class="fa fa-plus mr-1"></i> 推荐工具
+                    <i class="fa fa-plus mr-1" aria-hidden="true"></i> 推荐工具
                 </button>
             </div>
         </div>
@@ -132,10 +262,10 @@
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
                     <button class="btn-primary">
-                        <i class="fa fa-compass mr-2"></i> 探索工具库
+                        <i class="fa fa-compass mr-2" aria-hidden="true"></i> 探索工具库
                     </button>
                     <button class="btn-secondary">
-                        <i class="fa fa-lightbulb-o mr-2"></i> 查看成功案例
+                        <i class="fa fa-lightbulb-o mr-2" aria-hidden="true"></i> 查看成功案例
                     </button>
                 </div>
                 
@@ -171,21 +301,21 @@
             </div>
             
             <!-- 阶段标签 -->
-            <div class="flex flex-wrap justify-center gap-3 mb-10">
-                <button class="filter-btn active px-5 py-2 rounded-full bg-primary text-white font-medium" data-category="all">全阶段</button>
-                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="discovery">发现需求</button>
-                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="build">构建网站</button>
-                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="launch">发布网站</button>
-                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="promote">推广工具</button>
-                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="monetize">获取收入</button>
+            <div class="flex flex-wrap justify-center gap-3 mb-10" role="tablist" aria-label="工具分类筛选">
+                <button class="filter-btn active px-5 py-2 rounded-full bg-primary text-white font-medium" data-category="all" role="tab" aria-selected="true">全阶段</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="discovery" role="tab" aria-selected="false">发现需求</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="build" role="tab" aria-selected="false">构建网站</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="launch" role="tab" aria-selected="false">发布网站</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="promote" role="tab" aria-selected="false">推广工具</button>
+                <button class="filter-btn px-5 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-colors" data-category="monetize" role="tab" aria-selected="false">获取收入</button>
             </div>
             
             <!-- 工具卡片网格 -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" role="tabpanel" aria-label="工具列表">
                 <!-- 发现需求工具卡片 -->
-                <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
+                <article class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
                     <div class="h-40 bg-primary/10 flex items-center justify-center">
-                        <i class="fa fa-search text-5xl text-primary"></i>
+                        <i class="fa fa-search text-5xl text-primary" aria-hidden="true"></i>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-3">
@@ -195,21 +325,21 @@
                         <p class="text-gray-600 mb-4">获取竞争对手网站流量数据和市场洞察，帮助你发现市场机会</p>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="text-yellow-400 flex">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
+                                <div class="text-yellow-400 flex" aria-label="评分4.8星">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
                                 </div>
                                 <span class="text-gray-500 text-sm ml-1">4.8</span>
                             </div>
-                            <a href="https://www.similarweb.com" target="_blank" class="text-primary hover:text-primary/80 font-medium flex items-center">
-                                访问 <i class="fa fa-arrow-right ml-1"></i>
+                            <a href="https://www.similarweb.com" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary/80 font-medium flex items-center">
+                                访问 <i class="fa fa-arrow-right ml-1" aria-hidden="true"></i>
                             </a>
                         </div>
                     </div>
-                </div>
+                </article>
 
                 <div class="tool-card bg-white rounded-xl shadow-md overflow-hidden tool-card-hover" data-category="discovery">
                     <div class="h-40 bg-primary/10 flex items-center justify-center">
@@ -877,23 +1007,39 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">IndieDevTools</h3>
                     <p class="text-gray-400">为独立开发者提供最实用的工具导航，助力你的项目成功。</p>
+                    <div class="mt-4">
+                        <h4 class="font-semibold mb-2">关注我们</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" aria-label="微信公众号" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fa fa-wechat text-xl"></i>
+                            </a>
+                            <a href="#" aria-label="微博" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fa fa-weibo text-xl"></i>
+                            </a>
+                            <a href="#" aria-label="GitHub" class="text-gray-400 hover:text-white transition-colors">
+                                <i class="fa fa-github text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">工具分类</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">发现需求</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">构建网站</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">发布网站</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">推广工具</a></li>
+                        <li><a href="#tools" class="hover:text-white transition-colors">发现需求</a></li>
+                        <li><a href="#tools" class="hover:text-white transition-colors">构建网站</a></li>
+                        <li><a href="#tools" class="hover:text-white transition-colors">发布网站</a></li>
+                        <li><a href="#tools" class="hover:text-white transition-colors">推广工具</a></li>
+                        <li><a href="#tools" class="hover:text-white transition-colors">获取收入</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">资源</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">成功案例</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">问题解决</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">学习教程</a></li>
+                        <li><a href="#cases" class="hover:text-white transition-colors">成功案例</a></li>
+                        <li><a href="#problems" class="hover:text-white transition-colors">问题解决</a></li>
+                        <li><a href="#resources" class="hover:text-white transition-colors">学习教程</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">社区讨论</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">独立开发者博客</a></li>
                     </ul>
                 </div>
                 <div>
@@ -902,11 +1048,14 @@
                         <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">意见反馈</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">加入社区</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">合作伙伴</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">隐私政策</a></li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 IndieDevTools. All rights reserved.</p>
+                <p>&copy; 2024 IndieDevTools. All rights reserved. | 独立开发者工具导航</p>
+                <p class="mt-2 text-sm">专注于为独立开发者、创业者、程序员提供最实用的工具集合</p>
             </div>
         </div>
     </footer>
@@ -926,9 +1075,11 @@
                     filterButtons.forEach(btn => {
                         btn.classList.remove('active', 'bg-primary', 'text-white');
                         btn.classList.add('bg-gray-100', 'text-gray-700');
+                        btn.setAttribute('aria-selected', 'false');
                     });
                     this.classList.add('active', 'bg-primary', 'text-white');
                     this.classList.remove('bg-gray-100', 'text-gray-700');
+                    this.setAttribute('aria-selected', 'true');
                     
                     // 筛选工具卡片
                     toolCards.forEach(card => {
@@ -941,6 +1092,71 @@
                     });
                 });
             });
+
+            // 移动端菜单切换
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    const isHidden = mobileMenu.classList.contains('hidden');
+                    mobileMenu.classList.toggle('hidden');
+                    this.setAttribute('aria-expanded', !isHidden);
+                });
+            }
+
+            // 搜索功能
+            const searchInputs = document.querySelectorAll('input[placeholder*="搜索"]');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const toolCards = document.querySelectorAll('.tool-card');
+                    
+                    toolCards.forEach(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const description = card.querySelector('p').textContent.toLowerCase();
+                        const category = card.querySelector('span').textContent.toLowerCase();
+                        
+                        if (title.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // 导航栏滚动效果
+            let lastScrollTop = 0;
+            const navbar = document.getElementById('navbar');
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // 向下滚动
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    // 向上滚动
+                    navbar.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
         });
 
         // 添加淡入动画样式
@@ -950,8 +1166,62 @@
                 from { opacity: 0; transform: translateY(20px); }
                 to { opacity: 1; transform: translateY(0); }
             }
+            
+            /* 提高页面性能 */
+            .tool-card {
+                will-change: transform;
+            }
+            
+            /* 优化滚动性能 */
+            html {
+                scroll-behavior: smooth;
+            }
+            
+            /* 提高可访问性 */
+            .tool-card:focus-within {
+                outline: 2px solid #165DFF;
+                outline-offset: 2px;
+            }
         `;
         document.head.appendChild(style);
+
+        // 结构化数据更新
+        function updateStructuredData() {
+            const toolCards = document.querySelectorAll('.tool-card');
+            const visibleTools = Array.from(toolCards).filter(card => card.style.display !== 'none');
+            
+            // 更新工具数量
+            const itemListSchema = document.querySelector('script[type="application/ld+json"]:last-of-type');
+            if (itemListSchema) {
+                try {
+                    const schema = JSON.parse(itemListSchema.textContent);
+                    schema.numberOfItems = visibleTools.length;
+                    itemListSchema.textContent = JSON.stringify(schema, null, 2);
+                } catch (e) {
+                    console.warn('Failed to update structured data:', e);
+                }
+            }
+        }
+
+        // 页面可见性API
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                // 页面变为可见时更新数据
+                updateStructuredData();
+            }
+        });
+
+        // 性能监控
+        if ('performance' in window) {
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    if (perfData && perfData.loadEventEnd) {
+                        console.log('页面加载时间:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+                    }
+                }, 0);
+            });
+        }
     </script>
 </body>
 </html>

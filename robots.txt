@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# 允许访问所有页面
+Allow: /cn/
+Allow: /en/
+Allow: /assets/
+
+# 禁止访问特定文件
+Disallow: /assets/js/
+Disallow: /assets/css/
+Disallow: /assets/fonts/
+
+# 允许访问图片和字体文件
+Allow: /assets/images/
+Allow: /assets/fonts/
+
+# 站点地图
+Sitemap: https://indiedevtools.com/sitemap.xml
+
+# 爬取延迟（秒）
+Crawl-delay: 1 
